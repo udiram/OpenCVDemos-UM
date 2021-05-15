@@ -1,8 +1,9 @@
 from scipy.io.wavfile import read
+import cv2
 
 if __name__ == "__main__":
 
-    fs, data = read('knock.wav')
+    fs, data = read('clap.wav')
     # we will use the size of the array
     # to determine the duration of the sound
     data_size = len(data)
@@ -58,4 +59,22 @@ if __name__ == "__main__":
         return distances
 
 
-    print(calc_distances('knock.wav'))
+    print(calc_distances('clap.wav'))
+
+
+    def accept_test(pattern, test, min_error):
+        if len(pattern) > len(test):
+            return False
+        for i, dt in enumerate(pattern):
+            if not dt - test[i] < min_error:
+                return False
+        return True
+
+
+    pattern = calc_distances('clap.wav')
+    test = calc_distances('clap.wav')
+    # the minimum difference between the patterns in seconds
+    min_error = 0.1
+    print(accept_test(pattern, test, min_error))
+    # Outputs
+    True
