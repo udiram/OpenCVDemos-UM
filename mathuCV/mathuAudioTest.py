@@ -1,13 +1,17 @@
 import os
 
 import pyaudio
-import numpy as np
-import cv2
 import wave
 from pydub import AudioSegment
-import threading
+import socket
+
 
 if __name__ == "__main__":
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind((socket.gethostname(), 65000))
+    s.listen(1)
+
     p = pyaudio.PyAudio()
 
     CHUNK = 1024*4
@@ -33,6 +37,12 @@ if __name__ == "__main__":
         sound = AudioSegment.from_file("audioSample.wav", format = "wav")
         rms = sound.rms
         print(rms)
-        if rms > 1000:
-            print("you are loud")
-            break;
+        if rms > 1500:
+            client_socket, address = s.accept()
+            client_socket.sendall(bytes("succeeded", "utf-8"))
+            client_socket.close()
+            print("you loud")
+        else:
+            client_socket, address = s.accept()
+            client_socket.sendall(bytes("failed", "utf-8"))
+            client_socket.close()
