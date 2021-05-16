@@ -2,7 +2,7 @@ from scipy.io.wavfile import read
 
 if __name__ == "__main__":
 
-    fs, data = read('knock.wav')
+    fs, data = read('clap.wav')
     # we will use the size of the array
     # to determine the duration of the sound
     data_size = len(data)
@@ -58,4 +58,4 @@ if __name__ == "__main__":
         return distances
 
 
-    print(calc_distances('knock.wav'))
+    print(calc_distances('clap.wav'))
